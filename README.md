@@ -32,13 +32,27 @@ At the moment, this is just a single matlab script. So long as you have MATLAB, 
 
 You are more than welcome to use this if you want to (or just tell me how bad it is). I made this to help with research projects, so that's why it's looks and feels frankensteined. If you want to add to this, I tried to make it easily modifiable. Here is how it's structured:
 
-New Graph Types:
+### New Graph Types:
 Axis scaling is handled with affine transforms. They are designed such that when you click a point, the raw pixel coordinates of that point are converted to meaningful data. The ones I have built in are Linear, Logarithmic, and Reciprocal. To add a new graph type, you'll want to define another affine transform for the graph type you want, and update the switch cases for both xScale and yScale.
 
-Both axis are calibrated using two points, being pixel location and data value. The affine can be devised based on this. So, for example, the ones I have are done by:
-  Linear: data = a * pixel + b
-  Logarithmic: data = log10(a * pixel + b)
-  Reciprocal: data = 1/(a * pixel + b)
+Both axis are calibrated using two points, being pixel location and data value. The affine can be devised based on this. So, for example, the ones I have are done in the format:
+  1. Linear: data = a * pixel + b
+       Appears as: 
+  3. Logarithmic: data = log10(a * pixel + b)
+  4. Reciprocal: data = 1/(a * pixel + b)
 
-File exports:
-If you want to add a file output type, you'll want to modify the conditional block that handles outputMode. You'll want to add a new outputMode option where the use selects the file export, and insert a new elseif branch in the output block (which is right after strcmp(outputMode, 'Curve')). Once you do that you should be good to go!
+### Adding File exports:
+
+1. You'll want to extend the outputMode selection by adding your file type to the list of options.
+2. Then you'll want to insert a new elseif in the export block.
+   Example for JSON:
+   ```matlab
+     elseif strcmp(outputMode,'JSON')
+     [ofn,op]=uiputfile('*.json','Save JSON As');
+     data = struct('X',X,'Y',Y);
+     jsonText = jsonencode(data);
+     fid = fopen(fullfile(op,ofn),'w');
+     fprintf(fid,'%s',jsonText);
+     fclose(fid);
+   ```
+   
