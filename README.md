@@ -4,9 +4,9 @@ This is a lightweight tool for extracting data from images of graphs and plots. 
 
 ## Contents
 
-- [Install](#Install)
-- [Use](#Use)
-- [Customization](#Customization)
+- [Install](#install)
+- [Use](#use)
+- [Customization](#customization)
 
 ## Install
 
@@ -22,7 +22,7 @@ At the moment, this is just a single matlab script. So long as you have MATLAB, 
    - Repeat for the y axis
 5. **Digitize Points**:
    - **Curve**: Click points along a curve or line within your graph. Each click records a data point.
-   - **Geometry**: Click pairs of points tto form line segments. After each pair, start exactly where the previous one        ended. (So, for example, if you went from (0,5) to (3, 7), your next point should start at (3,7)).
+   - **Geometry**: Click pairs of points to form line segments. After each pair, start exactly where the previous one ended. (So, for example, if you went from (0,5) to (3, 7), your next point should start at (3,7)).
    - Can use backspace/delete to undo points.
 6. **Export**:
    - As a .csv, it's saved as (X, Y).
