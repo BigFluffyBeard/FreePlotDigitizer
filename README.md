@@ -36,17 +36,26 @@ You are more than welcome to use this if you want to (or just tell me how bad it
 Axis scaling is handled with affine transforms. They are designed such that when you click a point, the raw pixel coordinates of that point are converted to meaningful data. The ones I have built in are Linear, Logarithmic, and Reciprocal. To add a new graph type, you'll want to define another affine transform for the graph type you want, and update the switch cases for both xScale and yScale.
 
 Both axis are calibrated using two points, being pixel location and data value. The affine can be devised based on this. So, for example, the ones I have are done in the format:
-  1. Linear: data = a * pixel + b
+  1. Linear:
+     ```matlab
+     data = ((pixel - p1)/ (p2 - p1)) * (d2 - d1) + d1;
+     ```
      Appears as:
      ```matlab
      getLinear = @(v,vData,p) (diff(vData)./diff(p)).*(v-p(1))+vData(1);
      ```
-  3. Logarithmic: data = log10(a * pixel + b)
+  2. Logarithmic: 
+     ```matlab
+     data = 10.^(((pixel - p1) / (p2 - p1)) * (log10(d2) - log10(d1)) + log10(d1));
+     ```
      Appears as:
      ```matlab
      getLog = @(v,vData,p) 10.^(((v-p(1)).*(log10(vData(2))-log10(vData(1)))./diff(p))+log10(vData(1)));
      ```
-  5. Reciprocal: data = 1/(a * pixel + b)
+  3. Reciprocal:
+     ```matlab
+     data = 1 ./ (((pixel - p1) / (p2 - p1)) * (1/d2 - 1/d1) + 1/d1);
+     ```
      Appears as:
      ```matlab
      getRecip = @(v,vData,p) 1./(((v-p(1)).*(1./vData(2)-1./vData(1))./diff(p))+1./vData(1));
