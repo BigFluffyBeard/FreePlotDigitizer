@@ -22,7 +22,7 @@ At the moment, this is just a single matlab script. So long as you have MATLAB, 
    - Repeat for the y axis
 5. **Digitize Points**:
    - **Curve**: Click points along a curve or line within your graph. Each click records a data point.
-   - **Geometry**: Click pairs of points tto form line segments. After each pair, start exactly where the previous one        ended. (So, for example, if you went from 0 to 5, your next point should start at 5).
+   - **Geometry**: Click pairs of points tto form line segments. After each pair, start exactly where the previous one        ended. (So, for example, if you went from (0,5) to (3, 7), your next point should start at (3,7)).
    - Can use backspace/delete to undo points.
 6. **Export**:
    - As a .csv, it's saved as (X, Y).
@@ -35,7 +35,7 @@ You are more than welcome to use this if you want to (or just tell me how bad it
 ### New Graph Types:
 Axis scaling is handled with affine transforms. They are designed such that when you click a point, the raw pixel coordinates of that point are converted to meaningful data. The ones I have built in are Linear, Logarithmic, and Reciprocal. To add a new graph type, you'll want to define another affine transform for the graph type you want, and update the switch cases for both xScale and yScale.
 
-Both axis are calibrated using two points, being pixel location and data value. The affine can be devised based on this. So, for example, the ones I have are done in the format:
+Both axis are calibrated using two points, being pixel location and data value. From there, the affine transforms the pixel coordinates to usable data points within a transformed space (which is your specific graph type). So, for example, the ones I have are done in the format:
   1. Linear:
      ```matlab
      data = ((pixel - p1)/ (p2 - p1)) * (d2 - d1) + d1;
@@ -60,6 +60,7 @@ Both axis are calibrated using two points, being pixel location and data value. 
      ```matlab
      getRecip = @(v,vData,p) 1./(((v-p(1)).*(1./vData(2)-1./vData(1))./diff(p))+1./vData(1));
      ```
+Note: These assume you're working with a simple 2-dimensions x and y graph. It doesn't take into account two y-axes or higher dimensions.
 
 ### Adding File exports:
 
