@@ -28,3 +28,5 @@ Both axis are calibrated using two points, being pixel location and data value. 
   Logarithmic: data = log10(a * pixel + b)
   Reciprocal: data = 1/(a * pixel + b)
 
+File exports:
+If you want to add a file output type, you'll want to modify the conditional block that handles outputMode. You'll want to add a new outputMode option where the use selects the file export, and insert a new elseif branch in the output block (which is right after strcmp(outputMode, 'Curve')). Once you do that you should be good to go!
