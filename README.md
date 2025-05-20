@@ -14,7 +14,7 @@ At the moment, this is just a single matlab script. So long as you have MATLAB, 
 
 ## Use
 
-1. **Select file output**: You'll be prompted to choose an a file output.
+1. **Select file output**: You'll be prompted to choose an a file output in the dropdown menu. Currently supports .csv (Curve) or TXT (Geometry).
 2. **Load Image**: You'll select an image of the graph you want to use (png, jpg, tif, gif, mpeg).
 3. **Graph Type**: Pick scaling type for X and Y (Linear, Log10, or Reciprocal)
 4. **Calibrate Axes**:
@@ -60,7 +60,7 @@ Both axis are calibrated using two points, being pixel location and data value. 
      ```matlab
      getRecip = @(v,vData,p) 1./(((v-p(1)).*(1./vData(2)-1./vData(1))./diff(p))+1./vData(1));
      ```
-Note: These assume you're working with a simple 2-dimensions x and y graph. It doesn't take into account two y-axes or higher dimensions.
+**Note**: These assume you're working with a simple 2-dimensions x and y graph. It doesn't take into account two y-axes or higher dimensions.
 
 ### Adding File exports:
 
