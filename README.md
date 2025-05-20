@@ -14,7 +14,19 @@ At the moment, this is just a single matlab script. So long as you have MATLAB, 
 
 ## Use
 
-The program itself will give you instructions, though it can be a bit finicky (particularly if you're using it for geometry). You'll pick the output file you want and the graph type you need, then upload your image (currently it takes .png, .jpg, .tif, .mpeg, and .gif). It will then ask you to calibrate the axes, starting with the x-axis. You'll click along your axis twice, once for the minimum value and once for the maximum. Then you'll do the same for the y-axis. After this, you can click points along the curve or line you want until you're satisfied. If you're trying it with the fault geometry, two clicks will form a line. So, for example, if you're following a fault with depth, two clicks ill be a line. You start at, say, depth 0, and go to 5 km. To start the next line you'll want to click exactly where your first line ended. Otherwise it'll come out looking weird (it'll show you visually what you've traces afterwards). When you're done, hit enter, and it'll output a data file of whatever type you've selected.
+1. **Select file output**: You'll be prompted to choose an a file output.
+2. **Load Image**: You'll select an image of the graph you want to use (png, jpg, tif, gif, mpeg).
+3. **Graph Type**: Pick scaling type for X and Y (Linear, Log10, or Reciprocal)
+4. **Calibrate Axes**:
+   - Click two points on the x axis, minimum to maximum, then enter their corresponding values.
+   - Repeat for the y axis
+5. **Digitize Points**:
+   - **Curve**: Click points along a curve or line within your graph. Each click records a data point.
+   - **Geometry**: Click pairs of points tto form line segments. After each pair, start exactly where the previous one        ended. (So, for example, if you went from 0 to 5, your next point should start at 5).
+   - Can use backspace/delete to undo points.
+6. **Export**:
+   - As a .csv, it's saved as (X, Y).
+   - In geometry mode, it's saved as a .txt. Segments are saved as (x1  z1  x2  z2  slip_rate)
 
 ## Customization
 
