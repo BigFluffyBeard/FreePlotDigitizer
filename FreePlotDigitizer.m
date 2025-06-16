@@ -1,9 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Since Webplot Digitizer went and monopolized...I'll just make my own
-% digitizer...shouldn't be that hard, right?.....right? This pretty much
-% forces image pixels into the graph type format using affine transfrorms, and then outputs it to a file of your choosing (right now it's set for curves and geometry). 
-% It should be compatable with...any graph type... think. I tested it wth a Galilean type and it
-% worked perfectly. The geometry output takes a bit to get used to.
+% This is a tool for extracting data from graph images, similar to WebPlotDigitizer...except not quite universal.
+% At the moment it's designed for curves and linear fault geometry.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function FreePlotDigitizer()
