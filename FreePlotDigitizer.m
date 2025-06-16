@@ -112,10 +112,34 @@ function FreePlotDigitizer()
             return; 
         end
         fid=fopen(fullfile(op,ofn),'w'); fprintf(fid,'# x1\tz1\tx2\tz2\tslip_rate\n');
+
+        % This loops over each segment. Every pair of points is treated as a segment.
         for k=1:2:length(X)
-            resp=inputdlg(sprintf('Slip rate for segment %d:',(k+1)/2),'Slip Rate',1,{'0'});
-            if isempty(resp), break; end; sr=str2double(resp{1});
-            fprintf(fid,'%.4f\t%.4f\t%.4f\t%.4f\t%.2f\n',X(k),Y(k),X(k+1),Y(k+1),sr);
+            prompt = {sprintf('Slip rate for the segment %df:', (k+1) / 2), 'How many points do you want in each segment?'};
+            defans = {'0', '0'};    % Default values
+            resp = inputdlg(prompt, 'Segment Parameters', 1, defans);
+
+            if isempty(resp)
+                break;
+            end
+
+            % Casts string inputs to numerical values
+            sliprate = str2double(resp{1});    % Slip rate isn't necessary, it's just helpful to me.
+            nInterp = str2double(resp{2});
+
+            % Stores start and end points
+            x1 = X(k); x2 = X(k + 1);
+            y1 = Y(k); y2 = Y(k + 1);
+
+            % Linear interpolation between start and endpoints. Returns the amount of points the user specified in each segment.
+            for i = 0: nInterp + 1
+                t = i / (nInterp + 1);
+                xi = x1 + t * (x2 - x1);
+                yi = y1 + t * (y2 - y1);
+
+                % Saves each point found this way
+                fprintf(fid, '%.4f\t%.4f\t%.4f\t%.4f\t%.2f\n', xi, yi, xi, yi, sliprate);
+            end
         end
         fclose(fid);
     end
