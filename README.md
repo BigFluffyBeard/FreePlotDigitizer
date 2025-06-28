@@ -101,7 +101,7 @@ Now we need some way to account for the total distance traveled (a straight line
    ```
 We can take the length of these segments and sum over all of them for the total distance travelled along the curve:
    ```math
-   cumulative distance = [l_1, \space l_1 + l_2, \space l_1 + l_2 + l_3, \space l_1 + l_2 + ... + l_n]
+   [l_1, \space l_1 + l_2, \space l_1 + l_2 + l_3, \space l_1 + l_2 + ... + l_n]
    ```
 In matlab this looks like:
    ```matlab
