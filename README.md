@@ -78,7 +78,7 @@ Both axis are calibrated using two points, being pixel location and data value. 
      fclose(fid);
    ```
 
-### DuctTape.m
+## DuctTape.m
 Coming into this script we have a list of an N amount of (x, y) points that were manually picked along a curve. Unless you're a god, these points are going to be irregular. It is the job of DuctTape.m to take these irregularly-sampled points and output a new set of N points evenly spaced along your curve/line.
 
 Starting off, think of the length between two points on your curve as segments. So point (1, 2) to (3, 5) would be treated as a segment. What we can do is acquire the run of the segment (by which I mean distance traveled along the x-axis) by doing the following:
