@@ -7,6 +7,7 @@ This is a lightweight tool for extracting data from images of graphs and plots. 
 - [Install](#install)
 - [Use](#use)
 - [Customization](#customization)
+- [Pylon.m](#Pylon.m)
 - [DuctTape.m](#DuctTape.m)
 
 ## Install
@@ -77,6 +78,66 @@ Both axis are calibrated using two points, being pixel location and data value. 
      fprintf(fid,'%s',jsonText);
      fclose(fid);
    ```
+
+## Pylon.m
+Pylon.m is a helper function that handles axis calibration and manual digitization in the main script. It prompts you to click a specific number of points on your figure, and returns their `(x, y)` coordinates. You see, originally, I wanted the user to be able to zoom in on the figure while calibrating and digitizing...but WindowButtonDownFcn decided to not be able to do more than one thing at a time (even though it totally could). So as far as I'm aware, at the moment, I can't get around this without a huge re-write of the entire main script...and I'm just too lazy to do that. So now this function has just fallen into abstraction...literally. So, let's do an overview:
+
+   ```matlab
+   px_raw = function points = Pylon(prompTitle, n)
+   ```
+The function prompts the user to click `n` amount of points on the figure, and returns an `n x 2` array of coordinates. In the main scripts it is called with:
+   ```matlab
+   py_raw = Pylon('X-axis calibration', 2);
+   ```
+For the x-axis calibration.
+   ```matlab
+   Pylon('Y-axis Calibration', 2);
+   ```
+For the y-axis calibration. Though, if you wanted to, you could alter the main script to use Pylon when digitizing whatever curve/geometry your working with by doing:
+   ```matlab
+   points = Pylon('Trace', n);
+   ```
+This would allow you to trace your image with as many points as you want. The reason I didn't do this is because Pylon came much later...and my laziness overided the need for consistency in my code. When the function is called,it immedietly sets up an array to store your points in with the following lines:
+   ```matlab
+    points = zeros(n, 2);
+   ```
+   ```matlab
+    i = 1;
+   ```
+The first line pre-allocates an array with `n` rows and 2 columns, and fills it ith your clicked points later. `i= 1` just sets up the first index for storage. It then sets up a click callback:
+   ```matlab
+   hFig = gcf; % Using the current figure
+   ```
+   ```matlab
+   set(hFig, 'WindowButtonDownFcn', @getClick);
+   ```
+Which pretty says that each time a click is detected anywhere on the figure, the function `getClick` will be called. After this you will be prompted to calibrate your axis by click the minimum and maximum point and then entering in their respective values.
+   ```matlab
+   uiwait(msgbox(sprintf('Click %d points. Press Enter if needed. Click points while this message box is up. It will assume you"re done if you close this.', n), promptTitle));
+   ```
+A note about this part! It wants you to pick these points while the message box is up. If you close the message box (or press enter) before calibrating your axis, it will assume that you're done. It will prompt you to do the x-axis first, and then the y-axis afterwards. Now for the fun part. This handy little function here tracks your mouse clicks and stores them in the previously mentioned array. It will only do this for your specified `n` amount of points.
+   ```matlab
+   function getClick(~, ~)
+   ...
+   ```
+Within this function, you have:
+   ```matlab
+   cp = get(gca, 'CurrentPoint');
+   points(i, :) = cp(1, 1:2);
+   ```
+which gets the current coordinates of the clicked location with ` get(gca, \space 'currentPoint'); `, and extracts the `X` and `Y` values with ` cp(1, \space 1:2); `. It then visually marks this point on the image with:
+   ```matlab
+   plot(cp(1,1), cp(1,2), 'rx', 'MarkerSize', 8);
+   ```
+When you've hit the specified number of points `n`, the callback is automatically stopped, and the points are pushed to the array.
+   ```matlab
+   if i > n
+      set(hFig, 'WindowButtonDownFcn', '');
+      uiresume(hFig);
+   end
+   ```
+
+
 
 ## DuctTape.m
 Coming into this script we have a list of an N amount of (x, y) points that were manually picked along a curve. Unless you're a god, these points are going to be irregular. It is the job of DuctTape.m to take these irregularly-sampled points and output a new set of N points evenly spaced along your curve/line.
